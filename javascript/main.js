@@ -45,6 +45,24 @@ const genericXHRCall = (username, someRandoFunction) => {
 };
 //---------------end XHR Calls and stuff -----------------------//
 
+const validateUserInputData = () => {
+  //make sure not empty
+};
+
+const gatherUserInputData = (e) => {
+  validateUserInputData();
+  //do stuff
+};
+
+const createEventListenerStartButton = () => {
+  buttonFight = document.getElementById("button-fight");
+  buttonFight.addEventListener('click', gatherUserInputData);
+};
+
+const startUpApplication = () => {
+  createEventListenerStartButton();
+};
+startUpApplication();
 
 //for testing only
 //genericXHRCall("andymillion", parseUserProfile);
