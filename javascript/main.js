@@ -2,9 +2,7 @@ const printToDom = (domString, divId) => {
   document.getElementById(divId).innerHTML = domString;
 };
 
-//buildDOMStringPlayerProfile() will create the dynamic HTML for profiles.
-//This will be called twice, using a for or .forEach loop (once for each player)
-
+//---------------------DOM String Builders ---------------------//
 const buildDOMStringPlayerProfile = (inputArray) => {
   let output = "";
   for (let i = 0; i < inputArray.length; i++) {
@@ -18,3 +16,32 @@ const buildDOMStringPlayerProfile = (inputArray) => {
   }
   printToDom(output, "player-profiles");
 };
+//-----------------end DOM String Builders ---------------------//
+
+//pass this function into genericXHRCall
+function parseUserProfile() {  //Regular profiles
+  const dataJSON = JSON.parse(this.responseText);
+  console.log(dataJSON);
+  //call buildDomString for player profiles
+};
+//pass this function into genericXHRCall
+const parseWinnerProfile = () => {  //WINNER PROFILE
+  const dataJSON = JSON.parse(this.responseText);
+  //call buildDomString for WINNER (populate 'winner-box' & display badges)
+};
+
+//-------------------XHR Calls and stuff -----------------------//
+//will only return a single player at a time!
+function XHRFailure() {
+  console.log("Something is not quite right.");
+}
+const genericXHRCall = (username, someRandoFunction) => {
+  const data = new XMLHttpRequest();
+  data.addEventListener('load', someRandoFunction);
+  data.addEventListener('error', XHRFailure);
+  data.open("GET", "https://teamtreehouse.com/johnachor.json");
+  data.send();
+};
+//---------------end XHR Calls and stuff -----------------------//
+//for testing only
+genericXHRCall("andymillion", parseUserProfile);
