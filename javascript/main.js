@@ -1,7 +1,6 @@
 const printToDom = (domString, divId) => {
   document.getElementById(divId).innerHTML = domString;
 };
-
 //---------------------DOM String Builders ---------------------//
 const buildDOMStringPlayerProfile = (inputArray) => {
   let output = "";
@@ -18,30 +17,35 @@ const buildDOMStringPlayerProfile = (inputArray) => {
 };
 //-----------------end DOM String Builders ---------------------//
 
-//pass this function into genericXHRCall
-function parseUserProfile() {  //Regular profiles
+//-------------------XHR Calls and stuff -----------------------//
+//make genericXHRCall for player1 vs player2 profiles
+function parseUserProfile() {
   const dataJSON = JSON.parse(this.responseText);
   console.log(dataJSON);
   //call buildDomString for player profiles
-};
-//pass this function into genericXHRCall
-const parseWinnerProfile = () => {  //WINNER PROFILE
+}
+//make genericXHRCall for WINNER profile
+function parseWinnerProfile() {
   const dataJSON = JSON.parse(this.responseText);
+  console.log(dataJSON);
   //call buildDomString for WINNER (populate 'winner-box' & display badges)
-};
-
-//-------------------XHR Calls and stuff -----------------------//
-//will only return a single player at a time!
+}
 function XHRFailure() {
   console.log("Something is not quite right.");
 }
+//will only return a single player at a time!
 const genericXHRCall = (username, someRandoFunction) => {
+  console.log(username);
   const data = new XMLHttpRequest();
   data.addEventListener('load', someRandoFunction);
   data.addEventListener('error', XHRFailure);
-  data.open("GET", "https://teamtreehouse.com/johnachor.json");
+  data.open("GET", `https://teamtreehouse.com/${username}.json`);
   data.send();
+  console.log(this.responseText);
 };
 //---------------end XHR Calls and stuff -----------------------//
+
+
 //for testing only
-genericXHRCall("andymillion", parseUserProfile);
+//genericXHRCall("andymillion", parseUserProfile);
+//genericXHRCall("andymillion", parseWinnerProfile);
