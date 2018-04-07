@@ -45,12 +45,20 @@ const genericXHRCall = (username, someRandoFunction) => {
 };
 //---------------end XHR Calls and stuff -----------------------//
 
-const validateUserInputData = () => {
-  //make sure not empty
+//make sure input boxes are not empty
+const validateUserInputData = (inputPlayer1, inputPlayer2) => {
+  if (inputPlayer1.length < 1 || inputPlayer2.length < 1) {
+    alert('Both input boxes need to be populated');
+  } else {
+    console.log('validate okay');
+    //make xhr calls
+  }
 };
-
 const gatherUserInputData = (e) => {
-  validateUserInputData();
+  const player1 = document.getElementById("player1-input").value;
+  const player2 = document.getElementById("player2-input").value;
+  validateUserInputData(player1, player2);
+
   //do stuff
 };
 
