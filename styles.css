@@ -5,3 +5,12 @@ body {
 img {
   max-width: 100%;
 }
+
+.badge-img {
+  max-width: 150px;
+}
+
+.col-sm-3 {
+  margin: 0; 
+  padding: 0;
+}

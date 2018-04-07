@@ -30,7 +30,18 @@ const buildDOMStringPlayerProfile = (playersArray) => {
   comparePlayerScores(playersArray);
 };
 const buildDOMStringWinnerProfile = (winner) => {
-
+  console.log(winner);
+  let winnerName = `<h1 class="text-center winner">${winner.name} wins!</h1>`;
+  printToDom(winnerName, "winner-div");
+  let badges = "";
+  for (let i = 0; i < winner.badges.length; i++) {
+    badges += `
+              <div class="badge-div col-sm-3 text-center">
+                <h4 class="badge-name">${winner.badges[i].name}</h4>
+                <img class="badge-img" src="${winner.badges[i].icon_url}">
+              </div>`;
+  }
+  printToDom(badges, "winner-badges");
 };
 
 //-----------------end DOM String Builders ---------------------//
@@ -58,7 +69,7 @@ const semiMegaPush = (p1,p2) => {
 };
 
 const playerXHRCall = (player1objectInput) => {
-  player2 = document.getElementById("player2-input").value;
+  const player2 = document.getElementById("player2-input").value;
   const data = new XMLHttpRequest();
   data.addEventListener('load', prePush);
   data.addEventListener('error', XHRFailure);
