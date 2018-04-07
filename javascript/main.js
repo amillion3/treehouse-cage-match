@@ -28,7 +28,16 @@ function parseUserProfile() {
   //call buildDomString for player profiles
 }
 //make genericXHRCall for player1, player2 scores only
-function userScore() {
+function user1Score() {
+  const dataJSON = JSON.parse(this.responseText);
+  player1Score = dataJSON.points.total;
+  const player2 = document.getElementById("player2-input").value;
+  const player2Score = genericXHRCall(player2, user2Score);
+  console.log(player1Score, "---", player2Score);
+  debugger;
+}
+//make genericXHRCall for player1, player2 scores only
+function user2Score() {
   const dataJSON = JSON.parse(this.responseText);
   return dataJSON.points.total;
 }
@@ -54,17 +63,27 @@ const genericXHRCall = (username, someRandoFunction) => {
 //---------------end XHR Calls and stuff -----------------------//
 
 const compareUserPoints = () => {
-  const p1 = document.getElementById("player1-input").value;
-  const p2 = document.getElementById("player2-input").value;
-  if ( (genericXHRCall(p1, userScore)) < (genericXHRCall(p2, userScore)) ) {
-    //player 2 wins
-    //genericXHRCall(p2, parseWinnerProfile);
-  } else if ( (genericXHRCall(p1, userScore)) > (genericXHRCall(p2, userScore)) ) {
-    //player 1 wins
-    //genericXHRCall(p1, parseWinnerProfile);
-  } else {
-    //its a tie...
-  }
+  console.log('compare user points this ran');
+  const player1 = document.getElementById("player1-input").value;
+  console.log('player names',player1, player2);
+  genericXHRCall(player1, user1Score);
+
+
+
+  // if (player1Score > player1Score) {
+  //   console.log('player 1 won');
+  // } else if (player1Score < player1Score) {
+  //   console.log('player 2 won');
+  // }
+  // if ( (genericXHRCall(player1, userScore)) < (genericXHRCall(player2, userScore)) ) {
+  //   console.log('player 2 wins');
+  //   //genericXHRCall(p2, parseWinnerProfile);
+  // } else if ( (genericXHRCall(player1, userScore)) > (genericXHRCall(player2, userScore)) ) {
+  //   console.log('player 1 wins');
+  //   //genericXHRCall(p1, parseWinnerProfile);
+  // } else {
+  //   //its a tie...
+  // }
 };
 
 const getDataFromTreehouse = (p1, p2) => {
