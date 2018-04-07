@@ -2,18 +2,17 @@ const printToDom = (domString, divId) => {
   document.getElementById(divId).innerHTML = domString;
 };
 //---------------------DOM String Builders ---------------------//
-const buildDOMStringPlayerProfile = (inputArray) => {
-  let output = "";
-  for (let i = 0; i < inputArray.length; i++) {
-    output += `
-            <div id="${inputArray[i].name}">
-              <h2>${inputArray[i].name}</h2>
-              <img src="${inputArray[i].gravatar_url}">
-              <h3 id="">${inputArray[i].points.total}</h3>
-            </div>`;
-            //might need to refactor this, depending on how bootstrap goes
+const buildDOMStringPlayerProfile = (inputObject) => {
+  //console.log('buildDOMstringplayerprofile', inputObject);
+  let divId = "player1";
+  if (document.getElementById("player1").childElementCount >= 1) {
+    divId = "player2";
   }
-  printToDom(output, "player-profiles");
+  let output = `
+              <h2>${inputObject.name}</h2>
+              <img src="${inputObject.gravatar_url}" alt="${divId} Profile Photo">
+              <h4>${inputObject.points.total}</h4>`;
+  printToDom(output, divId);
 };
 //-----------------end DOM String Builders ---------------------//
 
@@ -21,13 +20,14 @@ const buildDOMStringPlayerProfile = (inputArray) => {
 //make genericXHRCall for player1 vs player2 profiles
 function parseUserProfile() {
   const dataJSON = JSON.parse(this.responseText);
-  console.log(dataJSON);
+  //console.log(dataJSON);
+  buildDOMStringPlayerProfile(dataJSON);
   //call buildDomString for player profiles
 }
 //make genericXHRCall for WINNER profile
 function parseWinnerProfile() {
   const dataJSON = JSON.parse(this.responseText);
-  console.log(dataJSON);
+  //console.log(dataJSON);
   //call buildDomString for WINNER (populate 'winner-box' & display badges)
 }
 function XHRFailure() {
@@ -35,23 +35,27 @@ function XHRFailure() {
 }
 //will only return a single player at a time!
 const genericXHRCall = (username, someRandoFunction) => {
-  console.log(username);
+  //console.log(username);
   const data = new XMLHttpRequest();
   data.addEventListener('load', someRandoFunction);
   data.addEventListener('error', XHRFailure);
   data.open("GET", `https://teamtreehouse.com/${username}.json`);
   data.send();
-  console.log(this.responseText);
+  //console.log(this.responseText);
 };
 //---------------end XHR Calls and stuff -----------------------//
+
+const getDataFromTreehouse = (p1, p2) => {
+  genericXHRCall(p1, parseUserProfile);
+  genericXHRCall(p2, parseUserProfile);
+};
 
 //make sure input boxes are not empty
 const validateUserInputData = (inputPlayer1, inputPlayer2) => {
   if (inputPlayer1.length < 1 || inputPlayer2.length < 1) {
     alert('Both input boxes need to be populated');
   } else {
-    console.log('validate okay');
-    //make xhr calls
+    getDataFromTreehouse(inputPlayer1, inputPlayer2);
   }
 };
 const gatherUserInputData = (e) => {
