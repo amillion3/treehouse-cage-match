@@ -3,16 +3,19 @@ const printToDom = (domString, divId) => {
 };
 //---------------------DOM String Builders ---------------------//
 const buildDOMStringPlayerProfile = (inputObject) => {
-  //console.log('buildDOMstringplayerprofile', inputObject);
-  let divId = "player1";
-  if (document.getElementById("player1").childElementCount >= 1) {
-    divId = "player2";
+  let playerId = "player1";
+  if (inputObject.profile_name ===
+      document.getElementById("player1-input").innerHTML) {
+        playerId = "player1";
+  } else if (inputObject.profile_name ===
+             document.getElementById("player2-input").value) {
+              playerId = "player2";
   }
   let output = `
               <h2>${inputObject.name}</h2>
-              <img src="${inputObject.gravatar_url}" alt="${divId} Profile Photo">
-              <h4>${inputObject.points.total}</h4>`;
-  printToDom(output, divId);
+              <img src="${inputObject.gravatar_url}" alt="${playerId} Profile Photo">
+              <h4 id="${playerId}-score">${inputObject.points.total}</h4>`;
+  printToDom(output, playerId);
 };
 //-----------------end DOM String Builders ---------------------//
 
@@ -45,9 +48,21 @@ const genericXHRCall = (username, someRandoFunction) => {
 };
 //---------------end XHR Calls and stuff -----------------------//
 
+const comparePlayerScores = () => {
+  if (document.getElementById("player1-score").value &&
+      document.getElementById("player2-score").value ) {
+        //compare scores
+  } else {// set a timeout?!
+  }
+};
+
+
+
+//make XHR call and then print out the player profiles
 const getDataFromTreehouse = (p1, p2) => {
   genericXHRCall(p1, parseUserProfile);
   genericXHRCall(p2, parseUserProfile);
+  comparePlayerScores();
 };
 
 //make sure input boxes are not empty
