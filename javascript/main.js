@@ -1,35 +1,53 @@
 const printToDom = (domString, divId) => {
   document.getElementById(divId).innerHTML = domString;
 };
-//---------------------DOM String Builders ---------------------//
-const buildDOMStringPlayerProfile = (inputObject) => {
-  //console.log('buildDOMstringplayerprofile', inputObject);
-  let divId = "player1";
-  if (document.getElementById("player1").childElementCount >= 1) {
-    divId = "player2";
+
+const comparePlayerScores = (playersArray) => {
+  p1Score = playersArray[0].points.total;
+  p2Score = playersArray[1].points.total;
+  if (p1Score < p2Score) {
+    //console.log('player 2 wins');
+    buildDOMStringWinnerProfile(playersArray[1]);
+  } else if (p1Score > p2Score) {
+    //console.log('player 1 wins');
+    buildDOMStringWinnerProfile(playersArray[0]);
+  } else {
+    alert("It's a tie.");
   }
-  let output = `
-              <h2>${inputObject.name}</h2>
-              <img src="${inputObject.gravatar_url}" alt="${divId} Profile Photo">
-              <h4>${inputObject.points.total}</h4>`;
-  printToDom(output, divId);
 };
+
+//---------------------DOM String Builders ---------------------//
+const buildDOMStringPlayerProfile = (playersArray) => {
+  let output = "";
+  for (let i = 0; i < playersArray.length; i++) {
+    output = `
+              <h2>${playersArray[i].name}</h2>
+              <img src="${playersArray[i].gravatar_url}">
+              <h4>${playersArray[i].points.total}</h4>`;
+    printToDom(output, `player${i+1}`);
+  }
+  //compare user scores
+  comparePlayerScores(playersArray);
+};
+const buildDOMStringWinnerProfile = (winner) => {
+  console.log(winner);
+  let winnerName = `<h1 class="text-center winner">${winner.name} wins!</h1>`;
+  printToDom(winnerName, "winner-div");
+  let badges = "";
+  for (let i = 0; i < winner.badges.length; i++) {
+    badges += `
+              <div class="badge-div col-sm-3 text-center">
+                <h4 class="badge-name">${winner.badges[i].name}</h4>
+                <img class="badge-img" src="${winner.badges[i].icon_url}">
+              </div>`;
+  }
+  printToDom(badges, "winner-badges");
+};
+
 //-----------------end DOM String Builders ---------------------//
 
 //-------------------XHR Calls and stuff -----------------------//
-//make genericXHRCall for player1 vs player2 profiles
-function parseUserProfile() {
-  const dataJSON = JSON.parse(this.responseText);
-  //console.log(dataJSON);
-  buildDOMStringPlayerProfile(dataJSON);
-  //call buildDomString for player profiles
-}
-//make genericXHRCall for WINNER profile
-function parseWinnerProfile() {
-  const dataJSON = JSON.parse(this.responseText);
-  //console.log(dataJSON);
-  //call buildDomString for WINNER (populate 'winner-box' & display badges)
-}
+
 function XHRFailure() {
   console.log("Something is not quite right.");
 }
@@ -43,32 +61,41 @@ const genericXHRCall = (username, someRandoFunction) => {
   data.send();
   //console.log(this.responseText);
 };
-//---------------end XHR Calls and stuff -----------------------//
 
-const getDataFromTreehouse = (p1, p2) => {
-  genericXHRCall(p1, parseUserProfile);
-  genericXHRCall(p2, parseUserProfile);
+const semiMegaPush = (p1,p2) => {
+  let newPlayerArray = [];
+  newPlayerArray.push(p1,p2);
+  return newPlayerArray;
 };
 
-//make sure input boxes are not empty
-const validateUserInputData = (inputPlayer1, inputPlayer2) => {
-  if (inputPlayer1.length < 1 || inputPlayer2.length < 1) {
-    alert('Both input boxes need to be populated');
-  } else {
-    getDataFromTreehouse(inputPlayer1, inputPlayer2);
+const playerXHRCall = (player1objectInput) => {
+  const player2 = document.getElementById("player2-input").value;
+  const data = new XMLHttpRequest();
+  data.addEventListener('load', prePush);
+  data.addEventListener('error', XHRFailure);
+  data.open("GET", `https://teamtreehouse.com/${player2}.json`);
+  data.send();
+
+  function prePush() {
+    const player2obj = JSON.parse(this.responseText);
+    const combinedPlayers = semiMegaPush(player1objectInput,player2obj);
+    console.log("hope this works",combinedPlayers);
+    buildDOMStringPlayerProfile(combinedPlayers);
   }
 };
-const gatherUserInputData = (e) => {
-  const player1 = document.getElementById("player1-input").value;
-  const player2 = document.getElementById("player2-input").value;
-  validateUserInputData(player1, player2);
+//---------------end XHR Calls and stuff -----------------------//
 
-  //do stuff
+function player1XHRSuccess() {
+  const player1Obj = JSON.parse(this.responseText);
+  playerXHRCall(player1Obj);
+}
+const getPlayer1Data = () => {
+  player1 = document.getElementById("player1-input").value;
+  genericXHRCall(player1, player1XHRSuccess);
 };
-
 const createEventListenerStartButton = () => {
   buttonFight = document.getElementById("button-fight");
-  buttonFight.addEventListener('click', gatherUserInputData);
+  buttonFight.addEventListener('click', getPlayer1Data);
 };
 
 const startUpApplication = () => {
