@@ -14,6 +14,9 @@ const buildDOMStringPlayerProfile = (inputObject) => {
               <h4>${inputObject.points.total}</h4>`;
   printToDom(output, divId);
 };
+const buildDOMStringWinnerProfile = (inputObject) => {
+  //do stuff
+};
 //-----------------end DOM String Builders ---------------------//
 
 //-------------------XHR Calls and stuff -----------------------//
@@ -24,10 +27,15 @@ function parseUserProfile() {
   buildDOMStringPlayerProfile(dataJSON);
   //call buildDomString for player profiles
 }
+//make genericXHRCall for player1, player2 scores only
+function userScore() {
+  const dataJSON = JSON.parse(this.responseText);
+  return dataJSON.points.total;
+}
 //make genericXHRCall for WINNER profile
 function parseWinnerProfile() {
   const dataJSON = JSON.parse(this.responseText);
-  //console.log(dataJSON);
+  buildDOMStringWinnerProfile(dataJSON);
   //call buildDomString for WINNER (populate 'winner-box' & display badges)
 }
 function XHRFailure() {
@@ -45,9 +53,24 @@ const genericXHRCall = (username, someRandoFunction) => {
 };
 //---------------end XHR Calls and stuff -----------------------//
 
+const compareUserPoints = () => {
+  const p1 = document.getElementById("player1-input").value;
+  const p2 = document.getElementById("player2-input").value;
+  if ( (genericXHRCall(p1, userScore)) < (genericXHRCall(p2, userScore)) ) {
+    //player 2 wins
+    //genericXHRCall(p2, parseWinnerProfile);
+  } else if ( (genericXHRCall(p1, userScore)) > (genericXHRCall(p2, userScore)) ) {
+    //player 1 wins
+    //genericXHRCall(p1, parseWinnerProfile);
+  } else {
+    //its a tie...
+  }
+};
+
 const getDataFromTreehouse = (p1, p2) => {
   genericXHRCall(p1, parseUserProfile);
   genericXHRCall(p2, parseUserProfile);
+  compareUserPoints();
 };
 
 //make sure input boxes are not empty
