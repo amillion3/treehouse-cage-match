@@ -6,16 +6,13 @@ const comparePlayerScores = (playersArray) => {
   p1Score = playersArray[0].points.total;
   p2Score = playersArray[1].points.total;
   if (p1Score < p2Score) {
-    //console.log('player 2 wins');
     buildDOMStringWinnerProfile(playersArray[1]);
   } else if (p1Score > p2Score) {
-    //console.log('player 1 wins');
     buildDOMStringWinnerProfile(playersArray[0]);
   } else {
     alert("It's a tie.");
   }
 };
-
 //---------------------DOM String Builders ---------------------//
 const buildDOMStringPlayerProfile = (playersArray) => {
   let output = "";
@@ -26,48 +23,38 @@ const buildDOMStringPlayerProfile = (playersArray) => {
               <h4>${playersArray[i].points.total}</h4>`;
     printToDom(output, `player${i+1}`);
   }
-  //compare user scores
   comparePlayerScores(playersArray);
 };
 const buildDOMStringWinnerProfile = (winner) => {
-  console.log(winner);
   let winnerName = `<h1 class="text-center winner">${winner.name} wins!</h1>`;
   printToDom(winnerName, "winner-div");
   let badges = "";
   for (let i = 0; i < winner.badges.length; i++) {
     badges += `
-              <div class="badge-div col-sm-3 text-center">
+              <div class="col-lg-3 text-center">
                 <h4 class="badge-name">${winner.badges[i].name}</h4>
                 <img class="badge-img" src="${winner.badges[i].icon_url}">
-              </div>`;
+              </div>
+              `;
   }
   printToDom(badges, "winner-badges");
 };
-
-//-----------------end DOM String Builders ---------------------//
-
-//-------------------XHR Calls and stuff -----------------------//
-
 function XHRFailure() {
   console.log("Something is not quite right.");
 }
 //will only return a single player at a time!
 const genericXHRCall = (username, someRandoFunction) => {
-  //console.log(username);
   const data = new XMLHttpRequest();
   data.addEventListener('load', someRandoFunction);
   data.addEventListener('error', XHRFailure);
   data.open("GET", `https://teamtreehouse.com/${username}.json`);
   data.send();
-  //console.log(this.responseText);
 };
-
 const semiMegaPush = (p1,p2) => {
   let newPlayerArray = [];
   newPlayerArray.push(p1,p2);
   return newPlayerArray;
 };
-
 const playerXHRCall = (player1objectInput) => {
   const player2 = document.getElementById("player2-input").value;
   const data = new XMLHttpRequest();
@@ -79,12 +66,9 @@ const playerXHRCall = (player1objectInput) => {
   function prePush() {
     const player2obj = JSON.parse(this.responseText);
     const combinedPlayers = semiMegaPush(player1objectInput,player2obj);
-    console.log("hope this works",combinedPlayers);
     buildDOMStringPlayerProfile(combinedPlayers);
   }
 };
-//---------------end XHR Calls and stuff -----------------------//
-
 function player1XHRSuccess() {
   const player1Obj = JSON.parse(this.responseText);
   playerXHRCall(player1Obj);
@@ -102,7 +86,3 @@ const startUpApplication = () => {
   createEventListenerStartButton();
 };
 startUpApplication();
-
-//for testing only
-//genericXHRCall("andymillion", parseUserProfile);
-//genericXHRCall("andymillion", parseWinnerProfile);
