@@ -20,19 +20,19 @@ const buildDOMStringPlayerProfile = (playersArray) => {
     output = `
               <h2>${playersArray[i].name}</h2>
               <img src="${playersArray[i].gravatar_url}">
-              <h4>${playersArray[i].points.total}</h4>`;
+              <h4>Total Points: <strong>${playersArray[i].points.total}</strong></h4>`;
     printToDom(output, `player${i+1}`);
   }
   comparePlayerScores(playersArray);
 };
 const buildDOMStringWinnerProfile = (winner) => {
-  let winnerName = `<h1 class="text-center winner">${winner.name} wins!</h1>`;
+  let winnerName = `<h1 class="text-center winner text-uppercase">${winner.name} wins!</h1>`;
   printToDom(winnerName, "winner-div");
   let badges = "";
   for (let i = 0; i < winner.badges.length; i++) {
     badges += `
-              <div class="col-lg-3 text-center">
-                <h4 class="badge-name">${winner.badges[i].name}</h4>
+              <div class="col-lg-3 text-center animate">
+                <h5 class="badge-name">${winner.badges[i].name}</h5>
                 <img class="badge-img" src="${winner.badges[i].icon_url}">
               </div>
               `;
