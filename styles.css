@@ -7,84 +7,74 @@ body {
   font-family: 'Ubuntu Mono', monospace;
 }
 h1 {
+  font-family: 'Roboto', sans-serif;
   color: #63ce82;
   letter-spacing: 3px;
-  font-size: 42px;
+  font-size: 56px;
   background-color: #3e474e;
   padding: 0;
   margin: 0;
 }
-
 .versus {
   font-size: 48px;
 }
-
 .header {
   margin: 0 0 50px 0;
-  padding: 0;
-  height: 55px;
+  padding: 8px 0 0 0;
+  height: 75px;
   background-color: #3e474e;
   background-position-x: 0;
   background-position-y: 0;
 }
-
 input {
   font-size: 19px;
 }
 input:focus {
   background-color: yellow;
 }
-
 .button-fight-div {
   padding: 50px 0 50px 0;
 }
-
 #button-fight {
   background-color: #63ce82;
   font-size: 24px;
   border: 2px solid #1a5339;
 }
-
 #button-fight:hover {
   background-color: #3e474e;
   color: #63ce82;
   font-size: 24px;
   border: 2px solid #1a5339;
 }
-
 img {
   max-width: 100%;
   border: 2px solid #1a5339;
   border-radius: 5px;
+  box-shadow: 0 6px 8px 0 hsla(0, 0%, 0%, 0.2);
 }
-
 #winner-div {
   height: 75px;
 }
-
 .winner {
   margin-top: 50px;
   padding: 20px 0 20px 0;
   background-color: #3e474e;
 }
-
 .container {
   margin-top: 50px;
 }
-
-.col-lg-3 {
+.col-xs-3 {
   width: 190px;
   height: 250px;
   padding: 20px 20px 0px 20px;
 }
-
 .badge-img {
   border: none;
   transition:all 2s ease-in-out;
   perspective: 800px;
   perspective-origin: 50% 100px;
+  box-shadow: none;
 }
-
 .badge-img:hover {
   transform:rotateY(360deg);
 }
